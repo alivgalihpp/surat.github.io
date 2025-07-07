@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generator Surat Pernyataan</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen p-4">
+  <div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
+    <h1 class="text-2xl font-bold mb-4">Surat Pernyataan</h1>
+
+    <input type="text" id="nama" placeholder="Nama Lengkap" class="w-full mb-3 p-2 border rounded" />
+    <input type="text" id="nip" placeholder="NIP" class="w-full mb-3 p-2 border rounded" />
+    <input type="text" id="jabatan" placeholder="Jabatan" class="w-full mb-3 p-2 border rounded" />
+    <input type="text" id="isi" placeholder="Isi Pernyataan" class="w-full mb-3 p-2 border rounded" />
+    <input type="date" id="tanggal" class="w-full mb-3 p-2 border rounded" />
+
+    <button id="generateBtn" class="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+      Buat Surat
+    </button>
+
+    <p id="status" class="mt-4 text-sm text-gray-600"></p>
+  </div>
+
+  <script>
+    document.getElementById("generateBtn").addEventListener("click", async () => {
+      const data = {
+        nama: document.getElementById("nama").value,
+        nip: document.getElementById("nip").value,
+        jabatan: document.getElementById("jabatan").value,
+        isi: document.getElementById("isi").value,
+        tanggal: document.getElementById("tanggal").value,
+      };
+
+      document.getElementById("status").textContent = "Memproses surat...";
+
+      try {
+        const res = await fetch("https://script.google.com/macros/s/AKfycbz5Mou8InBaT9pw-u9s1vJdndzogXY6xZPHRQNcLK5a-vCzFHGhD-avBXiEKx1cu-rO/exec", {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const url = await res.text();
+        document.getElementById("status").textContent = "Surat berhasil dibuat!";
+        window.open(url, "_blank");
+      } catch (err) {
+        document.getElementById("status").textContent = "Gagal membuat surat.";
+        alert("Terjadi kesalahan: " + err.message);
+      }
+    });
+  </script>
+</body>
+</html>
